@@ -2,7 +2,7 @@ using System;
 using System.Timers;
 using System.Threading;
 
-namespace MyServerTest
+namespace ServerStudy
 {
 	class MainClass
 	{

@@ -18,3 +18,13 @@ D:\Documents\ServerStudy\obj\Debug\ServerStudy.csproj.CoreCompileInputs.cache
 D:\Documents\ServerStudy\obj\Debug\ServerStudy.csproj.CopyComplete
 D:\Documents\ServerStudy\obj\Debug\ServerStudy.exe
 D:\Documents\ServerStudy\obj\Debug\ServerStudy.pdb
+d:\Documents\GitHub\ServerStudy\bin\Debug\ServerStudy.exe.config
+d:\Documents\GitHub\ServerStudy\bin\Debug\ServerStudy.exe
+d:\Documents\GitHub\ServerStudy\bin\Debug\ServerStudy.pdb
+d:\Documents\GitHub\ServerStudy\bin\Debug\MySql.Data.dll
+d:\Documents\GitHub\ServerStudy\bin\Debug\MySql.Data.xml
+d:\Documents\GitHub\ServerStudy\obj\Debug\ServerStudy.csprojAssemblyReference.cache
+d:\Documents\GitHub\ServerStudy\obj\Debug\ServerStudy.csproj.CoreCompileInputs.cache
+d:\Documents\GitHub\ServerStudy\obj\Debug\ServerStudy.csproj.CopyComplete
+d:\Documents\GitHub\ServerStudy\obj\Debug\ServerStudy.exe
+d:\Documents\GitHub\ServerStudy\obj\Debug\ServerStudy.pdb

@@ -11,7 +11,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
 
-namespace MyServerTest
+namespace ServerStudy
 {
 	public class DataMgr
 	{
