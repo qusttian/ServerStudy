@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 
 
-namespace MyServerTest
+namespace ServerStudy
 {
     public class Conn
     {

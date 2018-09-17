@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-namespace MyServerTest
+namespace ServerStudy
 {
 	public class Player
 	{
