@@ -167,9 +167,90 @@ namespace ServerStudy
 			}
 		}
 
+        //保存角色
         public bool SavePlayer(Player player)
         {
-            return true;
+            string id = player.id;
+            PlayerData playerData = player.data;
+
+            //序列化
+            IFormatter formatter = new BinaryFormatter();
+            MemoryStream stream = new MemoryStream();
+            try
+            {
+                formatter.Serialize(stream, playerData);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("[DataMgr]SavePlayer 序列化" + e.Message);
+                return false;
+            }
+
+            byte[] byteArr = stream.ToArray();
+            
+            //写入数据库
+            string formatStr= "update player set data= @data where id='{0}';";
+            string cmdStr = string.Format(formatStr, player.id);
+            MySqlCommand cmd = new MySqlCommand(cmdStr, sqlConn);
+            cmd.Parameters.Add("@data", MySqlDbType.Blob);
+            cmd.Parameters[0].Value = byteArr;
+            try
+            {
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("[DataMgr]SavePlayer 写入" + e.Message);
+                return false;
+            }
+        }
+
+        //获取玩家数据
+        public PlayerData GetPlayerData(string id)
+        {
+            PlayerData playerData = null;
+
+            //防SQL注入
+            if (!IsSafeStr(id))
+                return playerData;
+            //查询
+            string cmdStr = string.Format("Select * from player where id='{0}';", id);
+            MySqlCommand cmd = new MySqlCommand(cmdStr, sqlConn);
+            byte[] buffer = new byte[1];
+            try
+            {
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                if(!dataReader.HasRows)
+                {
+                    dataReader.Close();
+                    return playerData;
+                }
+                dataReader.Read();
+                long len = dataReader.GetBytes(1, 0, null, 0, 0);//1是data
+                buffer = new byte[len];
+                dataReader.GetBytes(1, 0, buffer,0, (int)len);
+                dataReader.Close();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("[DataMgr]GetPlayerData查询" + e.Message);
+                return playerData;
+            }
+
+            //反序列化
+            MemoryStream stream = new MemoryStream(buffer);
+            try
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                playerData = (PlayerData)formatter.Deserialize(stream);
+                return playerData;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("[DataMgr]GetPlayerData反序列化" + e.Message);
+                return playerData;
+            }
         }
 
 		//判定安全字符串

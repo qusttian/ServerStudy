@@ -34,6 +34,11 @@ namespace ServerStudy
         //协议
         public ProtocolBase proto;
 
+        //消息分发
+        public HandleConnMsg handleConnMsg = new HandleConnMsg();
+        public HandlePlayerMsg handlePlayerMsg = new HandlePlayerMsg();
+        public HandlePlayerEvent handlePlayerEvent = new HandlePlayerEvent();
+
         //单例
         public static ServNet instance;
         public ServNet()
@@ -78,6 +83,8 @@ namespace ServerStudy
             //Accept
             listenfd.BeginAccept(AcceptCb, null);
             Console.WriteLine("[服务器]启动成功！");
+
+           
 
             //定时器
             timer.Elapsed += new ElapsedEventHandler(HandleMainTimer);
@@ -206,6 +213,38 @@ namespace ServerStudy
         private void HandleMsg(Conn conn,ProtocolBase protoBase)
         {
             string name = protoBase.GetName();
+            string methodName = "Msg" + name;
+
+            //连接协议分发
+            if (conn.player == null || name == "HeartBeat" || name == "Logout")
+            {
+                MethodInfo mm = handleConnMsg.GetType().GetMethod(methodName);
+                if(mm==null)
+                {
+                    string str = "[警告]HandleMsg没有处理连接方法";
+                    Console.WriteLine(str + methodName);
+                    return;
+                }
+                Object[] obj = new object[] { conn, protoBase };
+                Console.WriteLine("[处理连接消息]" + conn.GetAddress() + ":" + name);
+                mm.Invoke(handleConnMsg, obj);
+            }
+
+            //角色协议分发
+            else
+            {
+                MethodInfo mm = handlePlayerMsg.GetType().GetMethod(methodName);
+                if(mm==null)
+                {
+                    string str = "[警告]HandleMsg没有处理玩家方法";
+                    Console.WriteLine(str + methodName);
+                    return;
+                }
+                Object[] obj = new object[] { conn, protoBase };
+                Console.WriteLine("[处理玩家消息]" + conn.player.id + ":" + name);
+                mm.Invoke(handlePlayerMsg, obj);
+            }
+
             Console.WriteLine("[收到协议]->" + name);
             if (name == "HeartBeat")
             {
@@ -267,6 +306,22 @@ namespace ServerStudy
                         conn.Close();
                     }
                 }
+            }
+        }
+
+        //打印信息
+        public void Print()
+        {
+            Console.WriteLine("========服务器登录信息==========");
+            for(int i=0;i<conns.Length;i++)
+            {
+                if (conns[i] == null) continue;
+                if (!conns[i].isUsed) continue;
+
+                string str = "连接[" + conns[i].GetAddress() + "]";
+                if (conns[i].player != null)
+                    str += "玩家id" + conns[i].player.id;
+                Console.WriteLine(str);
             }
         }
     }

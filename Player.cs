@@ -18,6 +18,7 @@ namespace ServerStudy
         public PlayerTempData tempData;
 
         //构造函数，给id和conn赋值
+  
 		public Player (string id,Conn conn)
 		{
             this.id = id;

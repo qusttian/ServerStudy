@@ -80,10 +80,10 @@ namespace ServerStudy
         }
 
         //发送协议，稍后实现
-        //public  void Send(ProtocolBase protocol)
-        //{
-        //ServNet.instance.Send(this,protocol);
-        //}
+        public  void Send(ProtocolBase protocol)
+        {
+            ServNet.instance.Send(this,protocol);
+        }
 
     }
 }
