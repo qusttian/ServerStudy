@@ -31,6 +31,9 @@ namespace ServerStudy
         //最大连接数
         public int maxConn = 50;
 
+        //协议
+        public ProtocolBase proto;
+
         //单例
         public static ServNet instance;
         public ServNet()
@@ -125,7 +128,6 @@ namespace ServerStudy
                 {
                     //获取接收的字节数
                     int count = conn.socket.EndReceive(asyncResult);
-
                     //关闭信号
                     if (count <= 0)
                     {
@@ -141,7 +143,7 @@ namespace ServerStudy
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("收到[" + conn.GetAddress() + "]断开连接-异常触发" + e.Message);
+                    Console.WriteLine("收到[" + conn.GetAddress() + "]断开连接-异常触发  " + e.Message);
                     conn.Close();
                 }
             }
@@ -169,11 +171,12 @@ namespace ServerStudy
             return -1;
         }
 
-
+        //数据的分包粘包处理
         private void ProcessData(Conn conn)
         {
+
             //小于长度字节
-            if(conn.buffCount<sizeof(Int32))
+            if (conn.buffCount < sizeof(Int32))
             {
                 return;
             }
@@ -181,19 +184,14 @@ namespace ServerStudy
             //消息长度
             Array.Copy(conn.readBuff, conn.lenBytes, sizeof(Int32));
             conn.msgLength = BitConverter.ToInt32(conn.lenBytes, 0);
-            if(conn.buffCount<conn.msgLength+sizeof(Int32))
+            if (conn.buffCount < conn.msgLength + sizeof(Int32))
             {
                 return;
             }
-
+           
             //处理消息
-            string str = System.Text.Encoding.UTF8.GetString(conn.readBuff, sizeof(Int32), conn.msgLength);
-            Console.WriteLine("收到消息[" + conn.GetAddress() + "]" + str);
-            if (str == "HeartBeat")
-            {
-                conn.lastTickTime = Sys.GetTimeStamp();
-            }
-               
+            ProtocolBase protocol = proto.Decode(conn.readBuff, sizeof(Int32), conn.msgLength);
+            HandleMsg(conn, protocol);
 
             //清除已处理的消息
             int count = conn.buffCount - conn.msgLength - sizeof(Int32);
@@ -205,10 +203,22 @@ namespace ServerStudy
             }
         }
 
-        //发送
-        public void Send(Conn conn,string str)
+        private void HandleMsg(Conn conn,ProtocolBase protoBase)
         {
-            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(str);
+            string name = protoBase.GetName();
+            Console.WriteLine("[收到协议]->" + name);
+            if (name == "HeartBeat")
+            {
+                Console.WriteLine("[更新心跳时间]" + conn.GetAddress());
+                conn.lastTickTime = Sys.GetTimeStamp();
+            }
+            //回射
+            Send(conn, protoBase);
+        }
+        //发送
+        public void Send(Conn conn,ProtocolBase protocol)
+        {
+            byte[] bytes = protocol.Encode();
             byte[] length = BitConverter.GetBytes(bytes.Length);
             byte[] sendBuff = length.Concat(bytes).ToArray();
             try
@@ -221,13 +231,23 @@ namespace ServerStudy
             }
         }
 
+        //广播
+        public void Broadcast(ProtocolBase protocol)
+        {
+            for(int i=0;i<conns.Length;i++)
+            {
+                if (!conns[i].isUsed) continue;
+                if (conns[i].player == null) continue;
+                Send(conns[i], protocol);
+            }
+        }
 
         //主定时器
         public void HandleMainTimer(object sender,System.Timers.ElapsedEventArgs e)
         {
             //处理心跳
-            HeartBeat();
-            timer.Start();
+            //HeartBeat();
+            //timer.Start();
         }
         //心跳
         public void HeartBeat()

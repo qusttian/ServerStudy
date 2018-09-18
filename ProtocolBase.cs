@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ServerStudy
 {
-    class ProtocolBase
+    public class ProtocolBase
     {
         //解码器，解码从readBuff中从start开始的length字节
         public virtual ProtocolBase Decode(byte[] readBuff,int start,int length)

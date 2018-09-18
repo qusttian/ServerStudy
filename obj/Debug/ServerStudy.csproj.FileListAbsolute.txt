@@ -28,3 +28,12 @@ d:\Documents\GitHub\ServerStudy\obj\Debug\ServerStudy.csproj.CoreCompileInputs.c
 d:\Documents\GitHub\ServerStudy\obj\Debug\ServerStudy.csproj.CopyComplete
 d:\Documents\GitHub\ServerStudy\obj\Debug\ServerStudy.exe
 d:\Documents\GitHub\ServerStudy\obj\Debug\ServerStudy.pdb
+D:\TianYuhua\GitHub\VSProject\ServerStudy\bin\Debug\ServerStudy.exe.config
+D:\TianYuhua\GitHub\VSProject\ServerStudy\bin\Debug\ServerStudy.exe
+D:\TianYuhua\GitHub\VSProject\ServerStudy\bin\Debug\ServerStudy.pdb
+D:\TianYuhua\GitHub\VSProject\ServerStudy\bin\Debug\MySql.Data.xml
+D:\TianYuhua\GitHub\VSProject\ServerStudy\obj\Debug\ServerStudy.csprojAssemblyReference.cache
+D:\TianYuhua\GitHub\VSProject\ServerStudy\obj\Debug\ServerStudy.csproj.CoreCompileInputs.cache
+D:\TianYuhua\GitHub\VSProject\ServerStudy\obj\Debug\ServerStudy.csproj.CopyComplete
+D:\TianYuhua\GitHub\VSProject\ServerStudy\obj\Debug\ServerStudy.exe
+D:\TianYuhua\GitHub\VSProject\ServerStudy\obj\Debug\ServerStudy.pdb

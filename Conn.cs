@@ -8,7 +8,7 @@ namespace ServerStudy
     public class Conn
     {
         //玩家
-        Player player;
+        public Player player;
         //常量
         public const int BUFFER_SIZE = 1024;
 
@@ -71,7 +71,7 @@ namespace ServerStudy
             if(player !=null)
             {
                 //玩家退出处理，关闭连接之前先保存玩家数据
-                //player.Logout();
+                player.Logout();
                 return;
             }
             Console.WriteLine("[断开连接]" + GetAddress());

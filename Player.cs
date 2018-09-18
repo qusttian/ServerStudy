@@ -13,14 +13,64 @@ namespace ServerStudy
 	public class Player
 	{
 		public string id;
+		public Conn conn;
+        public PlayerData data;
+        public PlayerTempData tempData;
 
-		public Conn Conn;
-
-		//数据
-		public PlayerData data;
-		public Player ()
+        //构造函数，给id和conn赋值
+		public Player (string id,Conn conn)
 		{
+            this.id = id;
+            this.conn = conn;
+            tempData = new PlayerTempData();
 		}
-	}
+
+        //发送,只是对ServNet中Send方法的封装
+        public void Send(ProtocolBase proto)
+        {
+            if (conn == null)
+                return;
+            ServNet.instance.Send(conn, proto);
+        }
+
+        //踢下线,
+        //第一个参数指明要踢下线的玩家ID，
+        //第二个参数指明要给玩家发送怎样的消息
+        //该方法与连接的消息不在同一线程，需要考虑线程安全
+        public static bool KickOff(string id,ProtocolBase proto)
+        {
+            Conn[] conns = ServNet.instance.conns;
+            for(int i=0;i<conns.Length;i++)
+            {
+                if (conns[i] == null) continue;
+                if (!conns[i].isUsed) continue;
+                if (conns[i].player == null) continue;
+                if(conns[i].player.id==id)
+                {
+                    lock(conns[i].player)
+                    {
+                        if (proto != null)
+                            conns[i].player.Send(proto);
+                        return conns[i].player.Logout();
+                    }
+                }
+            }
+            return true;
+        }
+        //下线
+        public bool Logout()
+        {
+            //事件处理，稍后实现,消息分发的内容之一，有些功能需要再玩家下线时做处理
+            ServNet.instance.handlePlayerEvent.OnLogout(this);
+
+            //保存
+            if (!DataMgr.instance.SavePlayer(this))
+                return false;
+            //下线
+            conn.player = null;
+            conn.Close();
+            return true;
+        }
+    }
 }
 

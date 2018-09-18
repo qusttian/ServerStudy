@@ -12,8 +12,8 @@ namespace ServerStudy
 			Console.WriteLine ("Hello World!");
 
 			ServNet servNet = new ServNet ();
+            servNet.proto = new ProtocolBytes();
 			servNet.Start ("127.0.0.1",1234);
-
 
 			Console.ReadLine ();
 

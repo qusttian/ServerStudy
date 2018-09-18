@@ -46,11 +46,16 @@
   <ItemGroup>
     <Compile Include="Conn.cs" />
     <Compile Include="DataMgr.cs" />
+    <Compile Include="HandleConnMsg.cs" />
+    <Compile Include="HandlePlayerEvent.cs" />
+    <Compile Include="HandlePlayerMsg.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerData.cs" />
+    <Compile Include="PlayerTempData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolBase.cs" />
+    <Compile Include="ProtocolBytes.cs" />
     <Compile Include="ProtocolStr.cs" />
     <Compile Include="ServNet.cs" />
     <Compile Include="Sys.cs" />

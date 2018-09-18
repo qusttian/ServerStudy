@@ -167,6 +167,11 @@ namespace ServerStudy
 			}
 		}
 
+        public bool SavePlayer(Player player)
+        {
+            return true;
+        }
+
 		//判定安全字符串
 		public bool IsSafeStr(string str)
 		{
