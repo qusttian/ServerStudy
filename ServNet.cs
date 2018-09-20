@@ -57,11 +57,11 @@ namespace ServerStudy
 			try
 			{
 				sqlConn.Open();
-				Console.WriteLine("[数据库]连接成功");
+				Console.WriteLine("[ServNet数据库]连接成功");
 			}
 			catch(Exception e )
 			{
-				Console.WriteLine("[数据库]连接失败"+ e.Message);
+				Console.WriteLine("[ServNet数据库]连接失败"+ e.Message);
 				return;
 			}
             //连接池
@@ -135,10 +135,12 @@ namespace ServerStudy
                 {
                     //获取接收的字节数
                     int count = conn.socket.EndReceive(asyncResult);
+                    Console.WriteLine("");
+                    Console.WriteLine("[ServNet] 接收到字节数 count = " + count+"-------------------------------------------------------");
                     //关闭信号
                     if (count <= 0)
                     {
-                        Console.WriteLine("收到[" + conn.GetAddress() + "]断开连接");
+                        Console.WriteLine("[ServNet] 收到 " + conn.GetAddress() + " 断开连接");
                         conn.Close();
                         return;
                     }
@@ -150,7 +152,7 @@ namespace ServerStudy
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("收到[" + conn.GetAddress() + "]断开连接-异常触发  " + e.Message);
+                    Console.WriteLine("[ServNet] 收到 " + conn.GetAddress() + " 断开连接-异常触发  " + e.Message);
                     conn.Close();
                 }
             }
@@ -181,7 +183,6 @@ namespace ServerStudy
         //数据的分包粘包处理
         private void ProcessData(Conn conn)
         {
-
             //小于长度字节
             if (conn.buffCount < sizeof(Int32))
             {
@@ -214,19 +215,20 @@ namespace ServerStudy
         {
             string name = protoBase.GetName();
             string methodName = "Msg" + name;
+            Console.WriteLine("[ServNet] 收到 协议 " + name);
 
             //连接协议分发
-            if (conn.player == null || name == "HeartBeat" || name == "Logout")
+            if (conn.player == null || name == "HeartBeat" || name == "Logout"||name == "Login")
             {
                 MethodInfo mm = handleConnMsg.GetType().GetMethod(methodName);
                 if(mm==null)
                 {
-                    string str = "[警告]HandleMsg没有处理连接方法";
+                    string str = "[ServNet] 警告 HandleMsg 没有处理连接方法";
                     Console.WriteLine(str + methodName);
                     return;
                 }
                 Object[] obj = new object[] { conn, protoBase };
-                Console.WriteLine("[处理连接消息]" + conn.GetAddress() + ":" + name);
+                Console.WriteLine("[ServNet] 处理连接消息 " + conn.GetAddress() + ":" + name);
                 mm.Invoke(handleConnMsg, obj);
             }
 
@@ -236,23 +238,23 @@ namespace ServerStudy
                 MethodInfo mm = handlePlayerMsg.GetType().GetMethod(methodName);
                 if(mm==null)
                 {
-                    string str = "[警告]HandleMsg没有处理玩家方法";
+                    string str = "[ServNet] 警告 HandleMsg没有处理玩家方法";
                     Console.WriteLine(str + methodName);
                     return;
                 }
-                Object[] obj = new object[] { conn, protoBase };
-                Console.WriteLine("[处理玩家消息]" + conn.player.id + ":" + name);
+                Object[] obj = new object[] { conn.player, protoBase };
+                Console.WriteLine("[ServNet] 处理玩家消息" + conn.player.id + ":" + name);
                 mm.Invoke(handlePlayerMsg, obj);
             }
 
-            Console.WriteLine("[收到协议]->" + name);
+            
             if (name == "HeartBeat")
             {
-                Console.WriteLine("[更新心跳时间]" + conn.GetAddress());
+                Console.WriteLine("[ServNet] 更新心跳时间 " + conn.GetAddress());
                 conn.lastTickTime = Sys.GetTimeStamp();
             }
-            //回射
-            Send(conn, protoBase);
+
+
         }
         //发送
         public void Send(Conn conn,ProtocolBase protocol)
@@ -260,13 +262,15 @@ namespace ServerStudy
             byte[] bytes = protocol.Encode();
             byte[] length = BitConverter.GetBytes(bytes.Length);
             byte[] sendBuff = length.Concat(bytes).ToArray();
+
             try
             {
                 conn.socket.BeginSend(sendBuff, 0, sendBuff.Length, SocketFlags.None, null, null);
+                Console.WriteLine("[ServNet] Send() to  [" + conn.GetAddress()+ "]   Length: "+sendBuff.Length +"  Content: " + protocol.GetDesc());
             }
             catch(Exception e)
             {
-                Console.WriteLine("[发送消息]" + conn.GetAddress() + ":" + e.Message);
+                Console.WriteLine("[ServNet] Send() " + conn.GetAddress() + " Error: " + e.Message);
             }
         }
 
@@ -309,6 +313,23 @@ namespace ServerStudy
             }
         }
 
+        /// <summary>
+        /// 关闭服务器
+        /// </summary>
+        public void Close()
+        {
+            for(int i=0;i<conns.Length;i++)
+            {
+                Conn conn = conns[i];
+                if (conn == null) continue;
+                if (!conn.isUsed) continue;
+                lock(conn)
+                {
+                    conn.Close();
+                }
+            }
+        }
+  
         //打印信息
         public void Print()
         {
@@ -324,5 +345,7 @@ namespace ServerStudy
                 Console.WriteLine(str);
             }
         }
+      
+        
     }
 }

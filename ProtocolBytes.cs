@@ -41,7 +41,7 @@ namespace ServerStudy
             for(int i=0;i<bytes.Length;i++)
             {
                 int b = (int)bytes[i];
-                str += b.ToString() + " ";
+                str += b.ToString() + " - ";
             }
             return str;
         }

@@ -40,7 +40,7 @@ namespace ServerStudy
             string protoName = protocol.GetString(start, ref start);
             //处理
             player.data.score += 1;
-            Console.WriteLine("MsgAddScore" + player.id + " " + player.data.score.ToString());
+            Console.WriteLine("MsgAddScore()-> " + player.id + "  " + player.data.score.ToString());
         }
     }
 }

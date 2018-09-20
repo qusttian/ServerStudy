@@ -16,11 +16,20 @@ namespace ServerStudy
             servNet.proto = new ProtocolBytes();
             servNet.Start("127.0.0.1", 1234);
 
-            Console.ReadLine();
+            while(true)
+            {
+                string str = Console.ReadLine();
+                switch (str)
+                {
+                    case "quit":
+                        servNet.Close();
+                        return;
+                    case "print":
+                        servNet.Print();
+                        break;
+                }
 
-
-
-
+            }
         }
 	}
 }

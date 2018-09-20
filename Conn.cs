@@ -74,7 +74,7 @@ namespace ServerStudy
                 player.Logout();
                 return;
             }
-            Console.WriteLine("[断开连接]" + GetAddress());
+            Console.WriteLine("[Conn 断开连接]" + GetAddress());
             socket.Close();
             isUsed = false;
         }

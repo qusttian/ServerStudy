@@ -37,9 +37,9 @@ namespace ServerStudy
             string protoName = protocol.GetString(start, ref start);
             string id = protocol.GetString(start, ref start);
             string pw = protocol.GetString(start, ref start);
-            string strFormat = "[收到注册协议]" + conn.GetAddress();
-            Console.WriteLine(strFormat + "用户名：" + id + "密码：" + pw);
-
+            string strFormat = "[HandleConnMsg -> MsgRegister() ] 收到  ["+conn.GetAddress()+"]  的注册协议    ";
+            Console.WriteLine(strFormat + "用户名：" + id + " 密码：" + pw);
+            
             //构建返回协议
             protocol = new ProtocolBytes();
             protocol.AddString("Register");
@@ -71,21 +71,23 @@ namespace ServerStudy
             string protoName = protocol.GetString(start, ref start);
             string id = protocol.GetString(start, ref start);
             string pw = protocol.GetString(start, ref start);
-            string strFormat = "[收到登录协议]" + conn.GetAddress();
-            Console.WriteLine(strFormat + "用户名：" + id + "密码：" + pw);
-
+            string strFormat = "[HandleConnMsg -> MsgLogin() ] 收到  [" + conn.GetAddress() + "]  的登录协议    ";
+            Console.WriteLine(strFormat + "用户名：" + id + " 密码：" + pw);
+      
             //构建返回协议
             ProtocolBytes protocolRet = new ProtocolBytes();
             protocolRet.AddString("Login");
 
+            
             //验证
             if(!DataMgr.instance.CheckPassword(id,pw))
             {
+                Console.WriteLine("[登录检查失败]");
                 protocolRet.AddInt(-1);
                 conn.Send(protocolRet);
                 return;
             }
-
+            
             //是否已经登录
             ProtocolBytes protocolLogout = new ProtocolBytes();
             protocolLogout.AddString("Logout");
@@ -95,7 +97,7 @@ namespace ServerStudy
                 conn.Send(protocolRet);
                 return;
             }
-
+            
             //获取玩家数据
             PlayerData playerData = DataMgr.instance.GetPlayerData(id);
             if(playerData==null)
@@ -106,9 +108,10 @@ namespace ServerStudy
             }
             conn.player = new Player(id, conn);
             conn.player.data = playerData;
-
+            
             //事件触发
             ServNet.instance.handlePlayerEvent.OnLogin(conn.player);
+            
             //返回
             protocolRet.AddInt(0);
             conn.Send(protocolRet);

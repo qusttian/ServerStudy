@@ -35,11 +35,11 @@ namespace ServerStudy
 			try
 			{
 				sqlConn.Open();
-				Console.WriteLine("[数据库]连接成功");
+				Console.WriteLine("[DataMgr数据库]连接成功");
 			}
 			catch(Exception e )
 			{
-				Console.WriteLine("[数据库]连接失败"+ e.Message);
+				Console.WriteLine("[DataMgr数据库]连接失败"+ e.Message);
 				return;
 			}
 		}
