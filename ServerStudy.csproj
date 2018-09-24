@@ -57,6 +57,8 @@
     <Compile Include="ProtocolBase.cs" />
     <Compile Include="ProtocolBytes.cs" />
     <Compile Include="ProtocolStr.cs" />
+    <Compile Include="Scene.cs" />
+    <Compile Include="ScenePlayer.cs" />
     <Compile Include="ServNet.cs" />
     <Compile Include="Sys.cs" />
   </ItemGroup>

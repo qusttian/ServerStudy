@@ -42,5 +42,35 @@ namespace ServerStudy
             player.data.score += 1;
             Console.WriteLine("MsgAddScore()-> " + player.id + "  " + player.data.score.ToString());
         }
+
+        //获取玩家列表
+        public void MsgGetList(Player player,ProtocolBase protocolBase)
+        {
+            Scene.instance.SendPlayerList(player);
+        }
+
+        //更新信息
+        public void MsgUpdateInfo(Player player,ProtocolBase protocolBase)
+        {
+            //获取数值
+            int start = 0;
+            ProtocolBytes protocol = (ProtocolBytes)protocolBase;
+            string protoName = protocol.GetString(start, ref start);
+            float x = protocol.GetFloat(start, ref start);
+            float y = protocol.GetFloat(start, ref start);
+            float z = protocol.GetFloat(start, ref start);
+            int score = player.data.score;
+            Scene.instance.UpdateInfo(player.id, x, y, z, score);
+
+            //广播
+            ProtocolBytes protocolRet = new ProtocolBytes();
+            protocolRet.AddString("UpdateInfo");
+            protocolRet.AddString(player.id);
+            protocolRet.AddFloat(x);
+            protocolRet.AddFloat(y);
+            protocolRet.AddFloat(z);
+            protocolRet.AddInt(score);
+            ServNet.instance.Broadcast(protocolRet);
+        }
     }
 }
