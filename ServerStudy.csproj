@@ -49,6 +49,7 @@
     <Compile Include="HandleConnMsg.cs" />
     <Compile Include="HandlePlayerEvent.cs" />
     <Compile Include="HandlePlayerMsg.cs" />
+    <Compile Include="HandleRoomMsg.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerData.cs" />
@@ -57,6 +58,8 @@
     <Compile Include="ProtocolBase.cs" />
     <Compile Include="ProtocolBytes.cs" />
     <Compile Include="ProtocolStr.cs" />
+    <Compile Include="Room.cs" />
+    <Compile Include="RoomMgr.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="ScenePlayer.cs" />
     <Compile Include="ServNet.cs" />

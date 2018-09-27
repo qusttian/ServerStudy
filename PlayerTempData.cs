@@ -8,6 +8,25 @@ namespace ServerStudy
 {
     public class PlayerTempData
     {
+        public Status status;
+        public Room room;      //玩家所在的房间
+        public int team = 1;   //玩家的阵营,1代表阵营1，2代表阵营2
+        public bool isOwner = false;
+
+
+        public PlayerTempData()
+        {
+            status = Status.None;
+        }
+
+
+        //状态
+        public enum Status
+        {
+            None,
+            Room,
+            Fight,
+        }
 
     }
 }
