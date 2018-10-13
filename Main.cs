@@ -16,7 +16,7 @@ namespace ServerStudy
             DataMgr dataMgr = new DataMgr();
             ServNet servNet = new ServNet();
             servNet.proto = new ProtocolBytes();
-            servNet.Start("192.168.1.106", 1234);
+            servNet.Start("127.0.0.1", 1234);
 
             while(true)
             {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServerStudy
 {
-    class Room
+    public class Room
     {
         //房间状态
         public enum Status

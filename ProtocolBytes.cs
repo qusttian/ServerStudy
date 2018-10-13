@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ServerStudy
 {
     //字节流协议模型
-    class ProtocolBytes:ProtocolBase
+    public class ProtocolBytes:ProtocolBase
     {
         //传输的字节流，整个协议都用byte数组表达
         public byte[] bytes;

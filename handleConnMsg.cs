@@ -22,8 +22,7 @@ namespace ServerStudy
         public void MsgHeartBeat(Conn conn,ProtocolBase protoBase)
         {
             conn.lastTickTime = Sys.GetTimeStamp();
-            Console.WriteLine("[更新心跳时间 ]" + conn.GetAddress());
-
+            //Console.WriteLine("[更新心跳时间 ]" + conn.GetAddress());
         }
 
         //注册
