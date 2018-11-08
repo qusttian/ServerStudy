@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Conn.cs" />
     <Compile Include="DataMgr.cs" />
+    <Compile Include="HandleBattleMsg.cs" />
     <Compile Include="HandleConnMsg.cs" />
     <Compile Include="HandlePlayerEvent.cs" />
     <Compile Include="HandlePlayerMsg.cs" />

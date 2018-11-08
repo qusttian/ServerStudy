@@ -135,8 +135,8 @@ namespace ServerStudy
                 {
                     //获取接收的字节数
                     int count = conn.socket.EndReceive(asyncResult);
-                    Console.WriteLine("");
-                    Console.WriteLine("[ServNet] 接收到字节数 count = " + count+"-------------------------------------------------------");
+                    //Console.WriteLine("");
+                    //Console.WriteLine("[ServNet] 接收到字节数 count = " + count+"-------------------------------------------------------");
                     //关闭信号
                     if (count <= 0)
                     {
@@ -215,8 +215,10 @@ namespace ServerStudy
         {
             string name = protoBase.GetName();
             string methodName = "Msg" + name;
-            Console.WriteLine("[ServNet] 收到 协议 " + name);
-
+            //Console.WriteLine("[ServNet] 收到 协议 " + name);
+            if (methodName == "MsgHit")
+                Console.WriteLine("收到 MsgHit 协议");
+         
             //连接协议分发
             if (conn.player == null || name == "HeartBeat" || name == "Logout"||name == "Login")
             {
@@ -228,7 +230,7 @@ namespace ServerStudy
                     return;
                 }
                 Object[] obj = new object[] { conn, protoBase };
-                Console.WriteLine("[ServNet] 处理连接消息 " + conn.GetAddress() + ":" + name);
+                //Console.WriteLine("[ServNet] 处理连接消息 " + conn.GetAddress() + ":" + name);
                 mm.Invoke(handleConnMsg, obj);
             }
 
@@ -243,14 +245,14 @@ namespace ServerStudy
                     return;
                 }
                 Object[] obj = new object[] { conn.player, protoBase };
-                Console.WriteLine("[ServNet] 处理玩家消息" + conn.player.id + ":" + name);
+                //Console.WriteLine("[ServNet] 处理玩家消息" + conn.player.id + ":" + name);
                 mm.Invoke(handlePlayerMsg, obj);
             }
 
             
             if (name == "HeartBeat")
             {
-                Console.WriteLine("[ServNet] 更新心跳时间 " + conn.GetAddress());
+                //Console.WriteLine("[ServNet] 更新心跳时间 " + conn.GetAddress());
                 conn.lastTickTime = Sys.GetTimeStamp();
             }
 
@@ -266,7 +268,7 @@ namespace ServerStudy
             try
             {
                 conn.socket.BeginSend(sendBuff, 0, sendBuff.Length, SocketFlags.None, null, null);
-                Console.WriteLine("[ServNet] Send() to  [" + conn.GetAddress()+ "]   Length: "+sendBuff.Length +"  Content: " + protocol.GetDesc());
+                //Console.WriteLine("[ServNet] Send() to  [" + conn.GetAddress()+ "]   Length: "+sendBuff.Length +"  Content: " + protocol.GetDesc());
             }
             catch(Exception e)
             {
