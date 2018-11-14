@@ -29,7 +29,7 @@ namespace ServerStudy
         public Conn[] conns;
 
         //最大连接数
-        public int maxConn = 50;
+        public int maxConn = 500;
 
         //协议
         public ProtocolBase proto;
@@ -189,9 +189,11 @@ namespace ServerStudy
                 return;
             }
 
-            //消息长度
+            //消息长度，将表示消息长度的4个字节复制到lenBytes中
             Array.Copy(conn.readBuff, conn.lenBytes, sizeof(Int32));
             conn.msgLength = BitConverter.ToInt32(conn.lenBytes, 0);
+            
+            //如果缓冲区中的字节数量小于消息长度+前面4位表示消息长度的字节
             if (conn.buffCount < conn.msgLength + sizeof(Int32))
             {
                 return;
@@ -216,8 +218,8 @@ namespace ServerStudy
             string name = protoBase.GetName();
             string methodName = "Msg" + name;
             //Console.WriteLine("[ServNet] 收到 协议 " + name);
-            if (methodName == "MsgHit")
-                Console.WriteLine("收到 MsgHit 协议");
+            //if (methodName == "MsgHit")
+            //    Console.WriteLine("收到 MsgHit 协议");
          
             //连接协议分发
             if (conn.player == null || name == "HeartBeat" || name == "Logout"||name == "Login")

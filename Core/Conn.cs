@@ -79,7 +79,7 @@ namespace ServerStudy
             isUsed = false;
         }
 
-        //发送协议，稍后实现
+        //发送协议
         public  void Send(ProtocolBase protocol)
         {
             ServNet.instance.Send(this,protocol);

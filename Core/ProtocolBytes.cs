@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServerStudy
 {
-    //字节流协议模型
+    //字节流协议模型，规定协议的第一个参数必须是字符串，代表协议名称
     public class ProtocolBytes:ProtocolBase
     {
         //传输的字节流，整个协议都用byte数组表达
@@ -33,7 +33,7 @@ namespace ServerStudy
             return GetString(0);
         }
 
-        //获取协议的描述
+        //提取字符串的每一个字节并以字符串的形式输出
         public override string GetDesc()
         {
             string str = "";

@@ -13,13 +13,13 @@ namespace ServerStudy
 	[Serializable]
 	public class PlayerData
 	{
-		public int score = 100;
+		public int score = 200;
         public int win = 0;
         public int fail = 0;
 
 		public PlayerData ()
 		{
-			score = 100;
+			score = 200;
 		}
 	}
 }

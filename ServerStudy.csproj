@@ -44,27 +44,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Conn.cs" />
-    <Compile Include="DataMgr.cs" />
-    <Compile Include="HandleBattleMsg.cs" />
-    <Compile Include="HandleConnMsg.cs" />
-    <Compile Include="HandlePlayerEvent.cs" />
-    <Compile Include="HandlePlayerMsg.cs" />
-    <Compile Include="HandleRoomMsg.cs" />
-    <Compile Include="Main.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="PlayerData.cs" />
-    <Compile Include="PlayerTempData.cs" />
+    <Compile Include="Core\Conn.cs" />
+    <Compile Include="Core\DataMgr.cs" />
+    <Compile Include="Logic\HandleBattleMsg.cs" />
+    <Compile Include="Logic\HandleConnMsg.cs" />
+    <Compile Include="Logic\HandlePlayerEvent.cs" />
+    <Compile Include="Logic\HandlePlayerMsg.cs" />
+    <Compile Include="Logic\HandleRoomMsg.cs" />
+    <Compile Include="Core\Main.cs" />
+    <Compile Include="Core\Player.cs" />
+    <Compile Include="Logic\PlayerData.cs" />
+    <Compile Include="Logic\PlayerTempData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProtocolBase.cs" />
-    <Compile Include="ProtocolBytes.cs" />
-    <Compile Include="ProtocolStr.cs" />
-    <Compile Include="Room.cs" />
-    <Compile Include="RoomMgr.cs" />
-    <Compile Include="Scene.cs" />
-    <Compile Include="ScenePlayer.cs" />
-    <Compile Include="ServNet.cs" />
-    <Compile Include="Sys.cs" />
+    <Compile Include="Core\ProtocolBase.cs" />
+    <Compile Include="Core\ProtocolBytes.cs" />
+    <Compile Include="Core\ProtocolStr.cs" />
+    <Compile Include="Logic\Room.cs" />
+    <Compile Include="Logic\RoomMgr.cs" />
+    <Compile Include="Logic\Scene.cs" />
+    <Compile Include="Logic\ScenePlayer.cs" />
+    <Compile Include="Core\ServNet.cs" />
+    <Compile Include="Core\Sys.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

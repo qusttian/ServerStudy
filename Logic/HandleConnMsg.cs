@@ -111,7 +111,7 @@ namespace ServerStudy
             //事件触发
             ServNet.instance.handlePlayerEvent.OnLogin(conn.player);
             
-            //返回
+            //登录成功，回复0
             protocolRet.AddInt(0);
             conn.Send(protocolRet);
             return;

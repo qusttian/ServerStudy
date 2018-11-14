@@ -26,7 +26,7 @@ namespace ServerStudy
                     room.Broadcast(room.GetRoomInfo());
                 }
             }
-            //Scene.instance.DeletePlayer(player.id);
+            
 
             //战斗中
             if(player.tempData.status==PlayerTempData.Status.Fight)

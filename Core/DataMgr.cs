@@ -17,7 +17,7 @@ namespace ServerStudy
 	{
 		MySqlConnection sqlConn;
 
-		//单利模式
+		//单例模式
 		public static DataMgr instance;
 		public DataMgr ()
 		{
@@ -111,7 +111,7 @@ namespace ServerStudy
 			{
 				return false;
 			}
-			//序列化
+			//将playerData对象序列化为二进制数据
 			IFormatter formatter = new BinaryFormatter ();
 			MemoryStream stream = new MemoryStream ();
 			PlayerData playerData = new PlayerData ();
@@ -143,7 +143,7 @@ namespace ServerStudy
 			}
 		}
 
-		//检测用户名和密码
+		//登录 检测用户名和密码
 		public bool CheckPassword(string id,string pw)
 		{
 			//防SQL注入
@@ -167,7 +167,7 @@ namespace ServerStudy
 			}
 		}
 
-        //保存角色
+        //保存角色数据
         public bool SavePlayer(Player player)
         {
             string id = player.id;
@@ -207,6 +207,14 @@ namespace ServerStudy
         }
 
         //获取玩家数据
+        //public long Getbytes(int i,long dataIndex,byte[] buffer,int bufferIndex,int length)
+        //i          ->从零开始的序列号，下述语句中0代表id,1代表data
+        //dataIndex  ->字段中的索引，从dataIndex处开始读取操作
+        //buffer     ->要将字节流读入的缓冲区
+        //bufferIndex->buffer中写入操作开始位置的索引
+        //length     ->要复制到缓冲区中的最大长度
+        //返回值     ->实际读取到的字节流长度
+        
         public PlayerData GetPlayerData(string id)
         {
             PlayerData playerData = null;
@@ -227,7 +235,8 @@ namespace ServerStudy
                     return playerData;
                 }
                 dataReader.Read();
-                long len = dataReader.GetBytes(1, 0, null, 0, 0);//1是data
+                //读取数据集中第二个字段的方法，第一个参数1代表第二个字段data
+                long len = dataReader.GetBytes(1, 0, null, 0, 0);
                 buffer = new byte[len];
                 dataReader.GetBytes(1, 0, buffer,0, (int)len);
                 dataReader.Close();
